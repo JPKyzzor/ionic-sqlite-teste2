@@ -1,22 +1,24 @@
+import { HomeComponent } from './pages/home/home.component';
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+import { ListagemUsuariosComponent } from './components/listagem-usuarios/listagem-usuarios.component';
+import { FormularioUsuarioComponent } from './components/formulario-usuario/formulario-usuario.component';
+import { EditarUsuarioComponent } from './components/editar-usuario/editar-usuario.component';
 
 const routes: Routes = [
   {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    path: '',
+    component: HomeComponent
   },
   {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
-  },
+    path: 'editarUsuario/:id', component:EditarUsuarioComponent
+  }
+
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
-  ],
-  exports: [RouterModule]
+  declarations: [],
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

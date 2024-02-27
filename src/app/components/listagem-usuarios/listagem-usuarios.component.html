@@ -1,0 +1,19 @@
+  <!-- Lista de usuários existentes -->
+  <ion-item *ngFor="let user of users()">
+    <ion-label style="width: 10px">{{user.id}}</ion-label>
+    <ion-label>{{user.name}}</ion-label>
+    <ion-label>{{user.cpf}}</ion-label>
+    <!-- Botão de editar-->
+    <ion-button slot="end" fill="clear" color="white" routerLink='editarUsuario/{{user.id}}'>
+      <ion-icon name="create-outline" slot="icon-only"> </ion-icon>
+    </ion-button>
+    <!--Botão de deletar-->
+    <ion-button
+      slot="end"
+      (click)="deleteUser(user)"
+      fill="clear"
+      color="danger"
+    >
+      <ion-icon name="trash" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-item>

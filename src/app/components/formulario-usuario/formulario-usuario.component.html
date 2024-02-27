@@ -1,0 +1,39 @@
+<form [formGroup]="userForm" (ngSubmit)="submit(formDir)" #formDir="ngForm">
+  <!-- Campos de inserção de nome e CPF -->
+  <ion-item>
+    <ion-input
+      label="Nome"
+      labelPlacement="stacked"
+      placeholder="João Pedro"
+      type="text"
+      minlength="3"
+      maxlength="50"
+      required="true"
+      formControlName="name"
+    ></ion-input>
+  </ion-item>
+  <div class="erro-validacao" *ngIf="nome.invalid && formDir.submitted">
+    <p *ngIf="nome.errors?.['required']">O nome é obrigatório.</p>
+    <p *ngIf="nome.errors?.['minlength']">Deve conter pelo menos 3 letras</p>
+    <p *ngIf="nome.errors?.['maxlength']">Deve conter até 50 letras</p>
+  </div>
+  <ion-item>
+    <ion-input
+      label="CPF"
+      labelPlacement="stacked"
+      placeholder="123.456.789-00"
+      type="text"
+      required="true"
+      minlength="10"
+      maxlength="11"
+      formControlName="cpf"
+    ></ion-input>
+  </ion-item>
+  <div class="erro-validacao" *ngIf="cpf.invalid && formDir.submitted">
+    <p *ngIf="cpf.errors?.['required']">O cpf é obrigatório.</p>
+    <p *ngIf="cpf.errors?.['minlength']">Deve conter 11 digitos</p>
+    <p *ngIf="cpf.errors?.['pattern']">Deve conter apenas números</p>
+  </div>
+  <!-- Botão para criar usuário -->
+  <ion-button expand="block" type="submit">{{btnText}}</ion-button>
+</form>
