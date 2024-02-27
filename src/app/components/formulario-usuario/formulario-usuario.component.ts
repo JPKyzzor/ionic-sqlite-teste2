@@ -1,4 +1,7 @@
-import { DatabaseService, User } from 'src/app/services/database-service.service';
+import {
+  DatabaseService,
+  User,
+} from 'src/app/services/database-service.service';
 import { RouterModule } from '@angular/router';
 import { Component, EventEmitter, OnInit, input } from '@angular/core';
 import { AlertController } from '@ionic/angular';
@@ -22,7 +25,7 @@ export class FormularioUsuarioComponent implements OnInit {
   @ViewChild('ngForm') formDir!: NgForm;
   @Output() formEnviado = new EventEmitter<User>();
   @Input() userData: User | null = null;
-  @Input() btnText!:string;
+  @Input() btnText!: string;
 
   userForm!: FormGroup;
   users = this.database.getUsers();
@@ -94,18 +97,41 @@ export class FormularioUsuarioComponent implements OnInit {
     this.database.updateUserByID(user.id.toString(), name, cpf);
   }
 
-  async submit(formDirective:FormGroupDirective) {
+  async submit(formDirective: FormGroupDirective) {
     if (this.userForm.invalid) {
       return;
     }
-    const userData:User = this.userForm.value;
-    const cpfExists = this.users().some((user) => user.cpf === userData.cpf);
-    if (cpfExists) {
-      const alert = await this.alertController.create({
-        header: 'Esse CPF já existe no banco de dados.',
-        buttons: ['Confirmar'],
-      });
-      await alert.present();
+    const userFormData: User = this.userForm.value;
+
+    let cpfInvalid!: boolean;
+    let erro!:string;
+
+    if (this.userData?.id === userFormData.id) {
+      // Se for uma edição
+      cpfInvalid = this.users().some(
+        (userDB) => userDB.id !== userFormData.id && userDB.cpf === userFormData.cpf
+      );
+      if(cpfInvalid){
+        erro = "Outro usuário já tem esse CPF."
+      }
+    } else {
+      //Se for um usuário novo
+      cpfInvalid = this.users().some(
+        (usersDB) => usersDB.cpf === userFormData.cpf
+      );
+      if(cpfInvalid){
+        erro = "Esse CPF já existe."
+      }
+    }
+
+    if (cpfInvalid) {
+      if(cpfInvalid){
+        const alert = await this.alertController.create({
+          header: erro,
+          buttons: ['Confirmar'],
+        });
+        await alert.present();
+      }
     } else {
       this.formEnviado.emit(this.userForm.value);
       formDirective.resetForm();
