@@ -2,7 +2,6 @@ import {
   DatabaseService,
   User,
 } from 'src/app/services/database-service.service';
-import { RouterModule } from '@angular/router';
 import { Component, EventEmitter, OnInit, input } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import {
@@ -23,7 +22,7 @@ import { Input, Output } from '@angular/core';
 })
 export class FormularioUsuarioComponent implements OnInit {
   @ViewChild('ngForm') formDir!: NgForm;
-  @Output() formEnviado = new EventEmitter<User>();
+  @Output() formSent = new EventEmitter<User>();
   @Input() userData: User | null = null;
   @Input() btnText!: string;
 
@@ -51,7 +50,7 @@ export class FormularioUsuarioComponent implements OnInit {
     });
   }
 
-  get nome() {
+  get name() {
     return this.userForm.get('name')!;
   }
   get cpf() {
@@ -104,7 +103,7 @@ export class FormularioUsuarioComponent implements OnInit {
     const userFormData: User = this.userForm.value;
 
     let cpfInvalid!: boolean;
-    let erro!:string;
+    let error!:string;
 
     if (this.userData?.id === userFormData.id) {
       // Se for uma edição
@@ -112,7 +111,7 @@ export class FormularioUsuarioComponent implements OnInit {
         (userDB) => userDB.id !== userFormData.id && userDB.cpf === userFormData.cpf
       );
       if(cpfInvalid){
-        erro = "Outro usuário já tem esse CPF."
+        error = "Outro usuário já tem esse CPF."
       }
     } else {
       //Se for um usuário novo
@@ -120,20 +119,20 @@ export class FormularioUsuarioComponent implements OnInit {
         (usersDB) => usersDB.cpf === userFormData.cpf
       );
       if(cpfInvalid){
-        erro = "Esse CPF já existe."
+        error = "Esse CPF já existe."
       }
     }
 
     if (cpfInvalid) {
       if(cpfInvalid){
         const alert = await this.alertController.create({
-          header: erro,
+          header: error,
           buttons: ['Confirmar'],
         });
         await alert.present();
       }
     } else {
-      this.formEnviado.emit(this.userForm.value);
+      this.formSent.emit(this.userForm.value);
       formDirective.resetForm();
       this.userForm.reset();
     }

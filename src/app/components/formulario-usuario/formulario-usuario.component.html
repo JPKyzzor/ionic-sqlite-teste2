@@ -12,10 +12,10 @@
       formControlName="name"
     ></ion-input>
   </ion-item>
-  <div class="erro-validacao" *ngIf="nome.invalid && formDir.submitted">
-    <p *ngIf="nome.errors?.['required']">O nome é obrigatório.</p>
-    <p *ngIf="nome.errors?.['minlength']">Deve conter pelo menos 3 letras</p>
-    <p *ngIf="nome.errors?.['maxlength']">Deve conter até 50 letras</p>
+  <div class="erro-validacao" *ngIf="name.invalid && formDir.submitted">
+    <p *ngIf="name.errors?.['required']">O nome é obrigatório.</p>
+    <p *ngIf="name.errors?.['minlength']">Deve conter pelo menos 3 letras</p>
+    <p *ngIf="name.errors?.['maxlength']">Deve conter até 50 letras</p>
   </div>
   <ion-item>
     <ion-input

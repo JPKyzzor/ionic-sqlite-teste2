@@ -12,12 +12,11 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./editar-usuario.component.scss'],
 })
 export class EditarUsuarioComponent implements OnInit {
-  usuario!: User;
   user: User | null = null;
   btnText = 'Editar usuário';
 
   constructor(
-    private databaseSVC: DatabaseService,
+    private dbSVC: DatabaseService,
     private route: ActivatedRoute,
     private alertController: AlertController,
     private router: Router
@@ -25,13 +24,13 @@ export class EditarUsuarioComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id')?.trim()!;
-    this.databaseSVC.getUserByID(id).then((user) => {
+    this.dbSVC.getUserByID(id).then((user) => {
       this.user = user;
     });
   }
 
   async editUser(user: User) {
-    this.databaseSVC.updateUserByID(
+    this.dbSVC.updateUserByID(
       user.id.toString().trim(),
       user.name,
       user.cpf
