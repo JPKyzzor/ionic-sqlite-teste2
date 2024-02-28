@@ -20,6 +20,11 @@ export class DatabaseService {
   private sqlite: SQLiteConnection = new SQLiteConnection(CapacitorSQLite);
   private db!: SQLiteDBConnection;
   private users: WritableSignal<User[]> = signal<User[]>([]);
+  /*private users: WritableSignal<User[]> = signal<User[]>([
+    { id: 1, name: 'João Pedro Carlos da Silva', cpf: '12345678900' },
+    { id: 2, name: 'Maria', cpf: '98765432100' },
+    { id: 3, name: 'José', cpf: '45678912300' }
+  ]);*/ //MOCK
 
   constructor() {}
 
