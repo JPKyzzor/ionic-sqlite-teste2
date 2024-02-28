@@ -9,6 +9,7 @@ import { User, DatabaseService } from 'src/app/services/database-service.service
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent{
+  users = this.dbSVC.getUsers();
   btnText = "Adicionar";
 
   constructor(private dbSVC:DatabaseService, private alertController:AlertController, private router:Router) { }

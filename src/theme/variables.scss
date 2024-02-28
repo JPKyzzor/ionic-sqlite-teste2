@@ -76,13 +76,13 @@
   --ion-color-light-tint: #f5f6f9;
 }
 
-@media (prefers-color-scheme: dark) {
+//@media (prefers-color-scheme: dark) {
   /*
    * Dark Colors
    * -------------------------------------------
    */
 
-  body {
+  /*body {
     --ion-color-primary: #003395;
     --ion-color-primary-rgb: 56, 128, 255;
     --ion-color-primary-contrast: #ffffff;
@@ -145,14 +145,14 @@
     --ion-color-light-contrast-rgb: 255, 255, 255;
     --ion-color-light-shade: #1e2023;
     --ion-color-light-tint: #383a3e;
-  }
+  }*/
 
   /*
    * iOS Dark Theme
    * -------------------------------------------
    */
 
-  .ios body {
+  /*.ios body {
     --ion-background-color: #000000;
     --ion-background-color-rgb: 0, 0, 0;
 
@@ -188,14 +188,14 @@
     --ion-background-color: var(--ion-color-step-100);
     --ion-toolbar-background: var(--ion-color-step-150);
     --ion-toolbar-border-color: var(--ion-color-step-250);
-  }
+  }*/
 
   /*
    * Material Design Dark Theme
    * -------------------------------------------
    */
 
-  .md body {
+  /*.md body {
     --ion-background-color: #121212;
     --ion-background-color-rgb: 18, 18, 18;
 
@@ -232,12 +232,22 @@
 
     --ion-card-background: #1e1e1e;
   }
-}
+}*/
 
 html {
   /*
    * For more information on dynamic font scaling, visit the documentation:
    * https://ionicframework.com/docs/layout/dynamic-font-scaling
    */
+   @font-face{
+    font-family: "Montserrat";
+    src: url(../assets/fonts/montserrat/static/Montserrat-Regular.ttf);
+  }
+
+  *{
+    font-family: 'Montserrat', sans-serif;
+  }
+
   --ion-dynamic-font: var(--ion-default-dynamic-font);
+  --ion-font-family: 'Montserrat'
 }
