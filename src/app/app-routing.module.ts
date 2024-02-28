@@ -7,11 +7,11 @@ import { EditarUsuarioComponent } from './components/editar-usuario/editar-usuar
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'usuario',
     component: HomeComponent
   },
   {
-    path: 'editarUsuario/:id', component:EditarUsuarioComponent
+    path: 'usuario/editarUsuario/:id', component:EditarUsuarioComponent
   }
 
 ];

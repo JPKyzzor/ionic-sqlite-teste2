@@ -12,7 +12,7 @@
       formControlName="name"
     ></ion-input>
   </ion-item>
-  <div class="erro-validacao" *ngIf="name.invalid && formDir.submitted">
+  <div class="validation-error" *ngIf="name.invalid && formDir.submitted">
     <p *ngIf="name.errors?.['required']">O nome é obrigatório.</p>
     <p *ngIf="name.errors?.['minlength']">Deve conter pelo menos 3 letras</p>
     <p *ngIf="name.errors?.['maxlength']">Deve conter até 50 letras</p>
@@ -29,7 +29,7 @@
       formControlName="cpf"
     ></ion-input>
   </ion-item>
-  <div class="erro-validacao" *ngIf="cpf.invalid && formDir.submitted">
+  <div class="validation-error" *ngIf="cpf.invalid && formDir.submitted">
     <p *ngIf="cpf.errors?.['required']">O cpf é obrigatório.</p>
     <p *ngIf="cpf.errors?.['minlength']">Deve conter 11 digitos</p>
     <p *ngIf="cpf.errors?.['pattern']">Deve conter apenas números</p>

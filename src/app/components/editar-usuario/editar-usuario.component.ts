@@ -41,6 +41,6 @@ export class EditarUsuarioComponent implements OnInit {
       buttons: ['OK'],
     });
     await alert.present();
-    this.router.navigate(['/']);
+    this.router.navigate(['/usuario']);
   }
 }
