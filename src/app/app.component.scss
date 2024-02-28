@@ -7,3 +7,15 @@ ion-img{
   width:200px;
   height: fit-content;
 }
+
+ion-header h1{
+  color: #003395;
+  font-size: 16px;
+}
+
+.container-flex{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-weight: bold;
+}

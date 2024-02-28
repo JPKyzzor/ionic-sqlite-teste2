@@ -1,26 +1,24 @@
-  <!-- Lista de usuários existentes -->
-  <ion-item>
-    <ion-grid>
-      <ion-row *ngFor="let user of users()" class="user-row ion-align-items-center">
-        <ion-col size="1">
-          <ion-label>{{ user.id }}</ion-label>
-        </ion-col>
-        <ion-col size="5">
-          <ion-label>{{ user.name }}</ion-label>
-        </ion-col>
-        <ion-col size="4">
-          <ion-label>{{ user.cpf }}</ion-label>
-        </ion-col>
-        <ion-col size="1">
-          <ion-button fill="clear" color="white" routerLink="editarUsuario/{{ user.id }}">
-            <ion-icon name="create-outline" slot="icon-only"></ion-icon>
-          </ion-button>
-        </ion-col>
-        <ion-col size="1">
-          <ion-button (click)="deleteUser(user)" fill="clear" color="danger">
-            <ion-icon name="trash" slot="icon-only"></ion-icon>
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-item>
+<!-- Lista de usuários existentes -->
+<ion-item>
+  <ion-grid>
+    <ion-row *ngFor="let user of users" class="user-row ion-align-items-center">
+      <ion-col size="1">{{ user.id }} </ion-col>
+      <ion-col size="5">{{ user.name }} </ion-col>
+      <ion-col size="4">{{ user.cpf }} </ion-col>
+      <ion-col size="1">
+        <ion-button
+          fill="clear"
+          color="white"
+          routerLink="editarUsuario/{{ user.id }}"
+        >
+          <ion-icon name="create-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col size="1">
+        <ion-button (click)="deleteUser(user)" fill="clear" color="danger">
+          <ion-icon name="trash" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-item>

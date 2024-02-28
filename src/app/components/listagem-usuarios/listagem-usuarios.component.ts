@@ -8,12 +8,12 @@ import { User, DatabaseService } from 'src/app/services/database-service.service
   styleUrls: ['./listagem-usuarios.component.scss'],
 })
 export class ListagemUsuariosComponent {
-  users = this.database.getUsers();
-  /*users: User[] = [
+  //users = this.database.getUsers();
+  users: User[] = [
     { id: 1, name: 'João', cpf: '12345678900' },
     { id: 2, name: 'Maria', cpf: '98765432100' },
     { id: 3, name: 'José', cpf: '45678912300' }
-  ];*/
+  ];
 
   constructor(
     private database: DatabaseService,
