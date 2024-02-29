@@ -47,7 +47,7 @@ export class FormularioUsuarioComponent implements OnInit {
         Validators.minLength(11),
         Validators.pattern('^[0-9]*$'),
       ]),
-      height: new FormControl(this.userData ? this.userData.height : '', [
+      height: new FormControl(this.userData ? this.userData.height.toFixed(2) : '', [
         Validators.required,
         Validators.pattern(/^\d+(?:[.,]\d{1,2})?$/),
         Validators.min(0),
