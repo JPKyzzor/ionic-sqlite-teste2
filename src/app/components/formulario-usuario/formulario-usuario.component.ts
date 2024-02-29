@@ -47,6 +47,14 @@ export class FormularioUsuarioComponent implements OnInit {
         Validators.minLength(11),
         Validators.pattern('^[0-9]*$'),
       ]),
+      height: new FormControl(this.userData ? this.userData.height : '', [
+        Validators.required,
+        Validators.pattern(/^\d+(?:[.,]\d{1,2})?$/),
+        Validators.min(0),
+        Validators.max(3),
+      ]),
+
+
     });
   }
 
@@ -56,44 +64,8 @@ export class FormularioUsuarioComponent implements OnInit {
   get cpf() {
     return this.userForm.get('cpf')!;
   }
-
-  async editUser(user: User) {
-    const alert = await this.alertController.create({
-      header: 'Editar Usuário',
-      inputs: [
-        {
-          name: 'name',
-          type: 'text',
-          placeholder: 'Novo Nome',
-          value: user.name, // Define o valor inicial como o nome atual do usuário
-        },
-        {
-          name: 'cpf',
-          type: 'text',
-          placeholder: 'Novo CPF',
-          value: user.cpf, // Define o valor inicial como o CPF atual do usuário
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-        },
-        {
-          text: 'Confirmar',
-          handler: (data) => {
-            // Chame sua função updateUser passando os novos dados
-            this.updateUser(user, data.name, data.cpf);
-          },
-        },
-      ],
-    });
-
-    await alert.present();
-  }
-
-  async updateUser(user: User, name: string, cpf: string) {
-    this.database.updateUserByID(user.id.toString(), name, cpf);
+  get height(){
+    return this.userForm.get('height')!;
   }
 
   async submit(formDirective: FormGroupDirective) {
@@ -132,7 +104,7 @@ export class FormularioUsuarioComponent implements OnInit {
         await alert.present();
       }
     } else {
-      this.formSent.emit(this.userForm.value);
+      this.formSent.emit(userFormData);
       formDirective.resetForm();
       this.userForm.reset();
     }

@@ -11,6 +11,7 @@ export interface User {
   id: number;
   name: string;
   cpf: string;
+  height: number;
 }
 
 @Injectable({
@@ -19,12 +20,20 @@ export interface User {
 export class DatabaseService {
   private sqlite: SQLiteConnection = new SQLiteConnection(CapacitorSQLite);
   private db!: SQLiteDBConnection;
-  private users: WritableSignal<User[]> = signal<User[]>([]);
-  /*private users: WritableSignal<User[]> = signal<User[]>([
-    { id: 1, name: 'João Pedro Carlos da Silva', cpf: '12345678900' },
-    { id: 2, name: 'Maria', cpf: '98765432100' },
-    { id: 3, name: 'José', cpf: '45678912300' }
-  ]);*/ //MOCK
+  //private users: WritableSignal<User[]> = signal<User[]>([]);
+  private users: WritableSignal<User[]> = signal<User[]>([
+    { id: 1, name: 'João Pedro Carlos da Silva', cpf: '12345678900', height: 1.72},
+    { id: 2, name: 'Dani', cpf: '98765432100', height: 1.57},
+    { id: 3, name: 'Augusto', cpf: '45678912300', height: 1.80},
+    { id: 4, name: 'Maria', cpf: '78912345600', height: 1.65},
+    { id: 5, name: 'Carlos', cpf: '32165498700', height: 1.78},
+    { id: 6, name: 'Ana', cpf: '65498732100', height: 1.60},
+    { id: 7, name: 'Pedro', cpf: '98732165400', height: 1.75},
+    { id: 8, name: 'Luisa', cpf: '14725836900', height: 1.70},
+    { id: 9, name: 'Felipe', cpf: '36925814700', height: 1.85},
+    { id: 10, name: 'Mariana', cpf: '25836914700', height: 1.68}
+]); //MOCK
+
 
   constructor() {}
 
@@ -42,7 +51,8 @@ export class DatabaseService {
     const schema = `CREATE TABLE IF NOT EXISTS users(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
-      cpf TEXT NOT NULL UNIQUE
+      cpf TEXT NOT NULL UNIQUE,
+      height NUMERIC NOT NULL
     );`;
 
     await this.db.execute(schema);
@@ -59,8 +69,8 @@ export class DatabaseService {
     this.users.set(users.values || []);
   }
 
-  async addUser(name: string, cpf: string) {
-    const query = `INSERT INTO users (name, cpf) VALUES ('${name}', '${cpf}')`;
+  async addUser(name: string, cpf: string, height:number) {
+    const query = `INSERT INTO users (name, cpf, height) VALUES ('${name}', '${cpf}', '${height}');`;
     const result = await this.db.query(query);
 
     this.loadUsers();
@@ -68,8 +78,8 @@ export class DatabaseService {
     return result;
   }
 
-  async updateUserByID(id: string, nome: string, cpf: string) {
-    const query = `UPDATE users SET name='${nome}', cpf='${cpf}' WHERE id='${id}'`;
+  async updateUserByID(id: number, nome: string, cpf: string, height:number) {
+    const query = `UPDATE users SET name='${nome}', cpf='${cpf}', height='${height}' WHERE id='${id}';`;
     const result = await this.db.query(query);
 
     // Atualize os usuários após a atualização
@@ -79,7 +89,7 @@ export class DatabaseService {
   }
 
   async deleteUserByID(id: string) {
-    const query = `DELETE FROM users WHERE id=${id}`;
+    const query = `DELETE FROM users WHERE id=${id};`;
     const result = await this.db.query(query);
 
     this.loadUsers();
@@ -87,7 +97,7 @@ export class DatabaseService {
     return result;
   }
   async getUserByID(id: string): Promise<User | null> {
-    const query = `SELECT * FROM users WHERE id=${id}`;
+    const query = `SELECT * FROM users WHERE id=${id};`;
     const result = await this.db.query(query);
 
     const user =

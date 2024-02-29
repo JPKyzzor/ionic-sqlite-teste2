@@ -9,55 +9,11 @@ import { User, DatabaseService } from 'src/app/services/database-service.service
 })
 export class ListagemUsuariosComponent {
   users = this.database.getUsers();
-  /*users: User[] = [
-    { id: 1, name: 'João', cpf: '12345678900' },
-    { id: 2, name: 'Maria', cpf: '98765432100' },
-    { id: 3, name: 'José', cpf: '45678912300' }
-  ];*/
 
   constructor(
     private database: DatabaseService,
     private alertController: AlertController
   ) {}
-
-  async editUser(user: User) {
-    const alert = await this.alertController.create({
-      header: 'Editar Usuário',
-      inputs: [
-        {
-          name: 'name',
-          type: 'text',
-          placeholder: 'Novo Nome',
-          value: user.name, // Define o valor inicial como o nome atual do usuário
-        },
-        {
-          name: 'cpf',
-          type: 'text',
-          placeholder: 'Novo CPF',
-          value: user.cpf, // Define o valor inicial como o CPF atual do usuário
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-        },
-        {
-          text: 'Confirmar',
-          handler: (data) => {
-            // Chame sua função updateUser passando os novos dados
-            this.updateUser(user, data.name, data.cpf);
-          },
-        },
-      ],
-    });
-
-    await alert.present();
-  }
-
-  async updateUser(user: User, name: string, cpf: string) {
-    this.database.updateUserByID(user.id.toString(), name, cpf);
-  }
 
   async deleteUser(user: User) {
     this.database.deleteUserByID(user.id.toString());

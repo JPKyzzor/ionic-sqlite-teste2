@@ -1,7 +1,7 @@
-<div>
+<ion-content>
   <app-formulario-usuario
     [btnText]="btnText"
     (formSent)="createUser($event)"
   ></app-formulario-usuario>
-  <app-listagem-usuarios *ngIf="users().length>0"></app-listagem-usuarios>
-</div>
+  <app-listagem-usuarios *ngIf="users().length > 0"></app-listagem-usuarios>
+</ion-content>

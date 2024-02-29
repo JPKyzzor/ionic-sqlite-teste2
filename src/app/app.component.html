@@ -5,27 +5,25 @@
       <h1>Sales Tools (WIP)</h1>
     </div>
   </ion-header>
-
   <ion-content>
     <ion-router-outlet></ion-router-outlet>
   </ion-content>
+  <ion-footer>
+    <ion-tab-bar>
+      <ion-tab-button tab="home1" routerLink="home1">
+        <ion-icon aria-hidden="true" name="triangle"></ion-icon>
+        <ion-label>Tab 1</ion-label>
+      </ion-tab-button>
 
-    <ion-footer>
-      <ion-tab-bar slot="bottom">
-        <ion-tab-button tab="home1" routerLink="home1">
-          <ion-icon aria-hidden="true" name="triangle"></ion-icon>
-          <ion-label>Tab 1</ion-label>
-        </ion-tab-button>
+      <ion-tab-button tab="home2" routerLink="home2">
+        <ion-icon aria-hidden="true" name="ellipse"></ion-icon>
+        <ion-label>Tab 2</ion-label>
+      </ion-tab-button>
 
-        <ion-tab-button tab="home2" routerLink="home2">
-          <ion-icon aria-hidden="true" name="ellipse"></ion-icon>
-          <ion-label>Tab 2</ion-label>
-        </ion-tab-button>
-
-        <ion-tab-button tab="usuario" routerLink="usuario">
-          <ion-icon aria-hidden="true" name="server-outline"></ion-icon>
-          <ion-label>Banco de dados</ion-label>
-        </ion-tab-button>
-      </ion-tab-bar>
-    </ion-footer>
+      <ion-tab-button tab="usuario" routerLink="usuario">
+        <ion-icon aria-hidden="true" name="server-outline"></ion-icon>
+        <ion-label>Banco de dados</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-footer>
 </ion-app>

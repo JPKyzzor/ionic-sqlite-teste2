@@ -1,5 +1,5 @@
 <form [formGroup]="userForm" (ngSubmit)="submit(formDir)" #formDir="ngForm">
-  <!-- Campos de inserção de nome e CPF -->
+  <!-- Campo nome-->
   <ion-item>
     <ion-input
       label="Nome"
@@ -17,12 +17,13 @@
     <p *ngIf="name.errors?.['minlength']">Deve conter pelo menos 3 letras</p>
     <p *ngIf="name.errors?.['maxlength']">Deve conter até 50 letras</p>
   </div>
+  <!--Campo CPF-->
   <ion-item>
     <ion-input
       label="CPF"
       labelPlacement="stacked"
       placeholder="123.456.789-00"
-      type="text"
+      type="tel"
       required="true"
       minlength="10"
       maxlength="11"
@@ -33,6 +34,25 @@
     <p *ngIf="cpf.errors?.['required']">O cpf é obrigatório.</p>
     <p *ngIf="cpf.errors?.['minlength']">Deve conter 11 digitos</p>
     <p *ngIf="cpf.errors?.['pattern']">Deve conter apenas números</p>
+  </div>
+  <!--Campo Altura-->
+  <ion-item>
+    <ion-input
+      label="Altura"
+      labelPlacement="stacked"
+      placeholder="1.70"
+      type="number"
+      required="true"
+      formControlName="height"
+      maxlength="4"
+      max="3"
+    ></ion-input>
+  </ion-item>
+  <div class="validation-error" *ngIf="height.invalid && formDir.submitted">
+    <p *ngIf="height.errors?.['required']"> A altura é obrigatória.</p>
+    <p *ngIf="height.errors?.['minlength']">Deve ser maior que 0</p>
+    <p *ngIf="height.errors?.['pattern']">Deve seguir o formato X,XX ou X.XX</p>
+    <p *ngIf="height.errors?.['min'] || height.errors?.['max']">Insira uma altura válida.</p>
   </div>
   <!-- Botão para criar usuário -->
   <ion-button expand="block" type="submit">{{btnText}}</ion-button>

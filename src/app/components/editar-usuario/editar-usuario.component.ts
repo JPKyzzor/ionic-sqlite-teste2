@@ -31,9 +31,10 @@ export class EditarUsuarioComponent implements OnInit {
 
   async editUser(user: User) {
     this.dbSVC.updateUserByID(
-      user.id.toString().trim(),
+      user.id,
       user.name,
-      user.cpf
+      user.cpf,
+      user.height
     );
     const alert = await this.alertController.create({
       header: 'Sucesso',
