@@ -20,8 +20,8 @@ export interface User {
 export class DatabaseService {
   private sqlite: SQLiteConnection = new SQLiteConnection(CapacitorSQLite);
   private db!: SQLiteDBConnection;
-  //private users: WritableSignal<User[]> = signal<User[]>([]);
-  private users: WritableSignal<User[]> = signal<User[]>([
+  private users: WritableSignal<User[]> = signal<User[]>([]);
+  /*private users: WritableSignal<User[]> = signal<User[]>([
     { id: 1, name: 'João Pedro Carlos da Silva', cpf: '12345678900', height: 1.72},
     { id: 2, name: 'Dani', cpf: '98765432100', height: 1.57},
     { id: 3, name: 'Augusto', cpf: '45678912300', height: 1.80},
@@ -32,7 +32,7 @@ export class DatabaseService {
     { id: 8, name: 'Luisa', cpf: '14725836900', height: 1.70},
     { id: 9, name: 'Felipe', cpf: '36925814700', height: 1.85},
     { id: 10, name: 'Mariana', cpf: '25836914700', height: 1.68}
-]); //MOCK
+]);*/ //MOCK
 
 
   constructor() {}
