@@ -12,6 +12,7 @@ export interface User {
   name: string;
   cpf: string;
   height: number;
+  date: string;
 }
 
 @Injectable({
@@ -52,7 +53,8 @@ export class DatabaseService {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       cpf TEXT NOT NULL UNIQUE,
-      height NUMERIC NOT NULL
+      height NUMERIC NOT NULL,
+      date TEXT NOT NULL
     );`;
 
     await this.db.execute(schema);
@@ -69,8 +71,8 @@ export class DatabaseService {
     this.users.set(users.values || []);
   }
 
-  async addUser(name: string, cpf: string, height:number) {
-    const query = `INSERT INTO users (name, cpf, height) VALUES ('${name}', '${cpf}', '${height}');`;
+  async addUser(name: string, cpf: string, height:number, date:string) {
+    const query = `INSERT INTO users (name, cpf, height, date) VALUES ('${name}', '${cpf}', '${height}', '${date}');`;
     const result = await this.db.query(query);
 
     this.loadUsers();
@@ -78,8 +80,9 @@ export class DatabaseService {
     return result;
   }
 
-  async updateUserByID(id: number, nome: string, cpf: string, height:number) {
-    const query = `UPDATE users SET name='${nome}', cpf='${cpf}', height='${height}' WHERE id='${id}';`;
+  async updateUserByID(id: number, nome: string, cpf: string, height:number, date:string) {
+    const query = `UPDATE users SET name='${nome}', cpf='${cpf}', height='${height}', date='${date}' WHERE id='${id}';`;
+    console.log("Query pro banco: "+query);
     const result = await this.db.query(query);
 
     // Atualize os usuários após a atualização

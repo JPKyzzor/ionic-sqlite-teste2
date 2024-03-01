@@ -11,6 +11,7 @@ import {
   Validators,
   NgForm,
   FormGroupDirective,
+  AbstractControl,
 } from '@angular/forms';
 import { ViewChild } from '@angular/core';
 import { Input, Output } from '@angular/core';
@@ -28,12 +29,15 @@ export class FormularioUsuarioComponent implements OnInit {
 
   userForm!: FormGroup;
   users = this.database.getUsers();
+  maxDate: string = this.calculateMaxDate();
+
   constructor(
     private database: DatabaseService,
     private alertController: AlertController
   ) {}
 
   ngOnInit() {
+    const dataTeste = new Date();
     this.userForm = new FormGroup({
       id: new FormControl(this.userData ? this.userData.id : ''),
       name: new FormControl(this.userData ? this.userData.name : '', [
@@ -53,8 +57,10 @@ export class FormularioUsuarioComponent implements OnInit {
         Validators.min(0),
         Validators.max(3),
       ]),
-
-
+      date: new FormControl(this.userData ? this.userData.date : this.maxDate, [
+        Validators.required,
+        this.validateAge.bind(this)
+      ])
     });
   }
 
@@ -66,6 +72,9 @@ export class FormularioUsuarioComponent implements OnInit {
   }
   get height(){
     return this.userForm.get('height')!;
+  }
+  get date(){
+    return this.userForm.get('date')!;
   }
 
   async submit(formDirective: FormGroupDirective) {
@@ -108,5 +117,23 @@ export class FormularioUsuarioComponent implements OnInit {
       formDirective.resetForm();
       this.userForm.reset();
     }
+  }
+
+  validateAge(control: AbstractControl): { [key: string]: boolean } | null {
+    const currentDate = new Date();
+    const selectedDate = new Date(control.value);
+    const ageDiff = currentDate.getFullYear() - selectedDate.getFullYear();
+
+    if (ageDiff < 18) {
+      return { 'underAge': true };
+    }
+
+    return null;
+  }
+
+  calculateMaxDate(): string {
+    const minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear() - 18);
+    return minDate.toISOString();
   }
 }

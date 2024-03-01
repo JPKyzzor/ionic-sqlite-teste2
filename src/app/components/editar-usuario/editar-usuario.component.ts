@@ -34,7 +34,8 @@ export class EditarUsuarioComponent implements OnInit {
       user.id,
       user.name,
       user.cpf,
-      user.height
+      user.height,
+      user.date
     );
     const alert = await this.alertController.create({
       header: 'Sucesso',

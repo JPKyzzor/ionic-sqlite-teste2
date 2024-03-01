@@ -1,6 +1,9 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { User, DatabaseService } from 'src/app/services/database-service.service';
+import {
+  User,
+  DatabaseService,
+} from 'src/app/services/database-service.service';
 
 @Component({
   selector: 'app-listagem-usuarios',
@@ -17,5 +20,10 @@ export class ListagemUsuariosComponent {
 
   async deleteUser(user: User) {
     this.database.deleteUserByID(user.id.toString());
+  }
+
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('pt-BR');
   }
 }

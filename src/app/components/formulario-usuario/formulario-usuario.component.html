@@ -49,11 +49,34 @@
     ></ion-input>
   </ion-item>
   <div class="validation-error" *ngIf="height.invalid && formDir.submitted">
-    <p *ngIf="height.errors?.['required']"> A altura é obrigatória.</p>
+    <p *ngIf="height.errors?.['required']">A altura é obrigatória.</p>
     <p *ngIf="height.errors?.['minlength']">Deve ser maior que 0</p>
     <p *ngIf="height.errors?.['pattern']">Deve seguir o formato X,XX ou X.XX</p>
-    <p *ngIf="height.errors?.['min'] || height.errors?.['max']">Insira uma altura válida.</p>
+    <p *ngIf="height.errors?.['min'] || height.errors?.['max']">
+      Insira uma altura válida.
+    </p>
+  </div>
+  <!--Campo data-->
+  <ion-item>
+    <ion-label position="start">Data de nascimento: </ion-label>
+    <ion-datetime-button datetime="{{this.userData ? 'dateEdit' : 'dateAdd'}}"></ion-datetime-button>
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime
+          id="{{this.userData ? 'dateEdit' : 'dateAdd'}}"
+          presentation="date"
+          formControlName="date"
+          max="{{ maxDate }}"
+        ></ion-datetime>
+      </ng-template>
+    </ion-modal>
+  </ion-item>
+  <div class="validation-error" *ngIf="date.invalid && formDir.submitted">
+    <p *ngIf="date.errors?.['required']">A data de nascimento é obrigatória.</p>
+    <p *ngIf="date.errors?.['underAge']">
+      O usuário deve ser maior de 18 anos.
+    </p>
   </div>
   <!-- Botão para criar usuário -->
-  <ion-button expand="block" type="submit">{{btnText}}</ion-button>
+  <ion-button expand="block" type="submit">{{ btnText }}</ion-button>
 </form>

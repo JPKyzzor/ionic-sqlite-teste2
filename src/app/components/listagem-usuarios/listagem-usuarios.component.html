@@ -12,6 +12,7 @@
     <ion-col size="5" class="data">{{ user.name }} </ion-col>
     <ion-col size="4" class="data">{{ user.cpf }} </ion-col>
     <ion-col size="2">{{ user.height.toFixed(2).replace('.',',') }}</ion-col>
+    <ion-col size="12" class="data">{{formatDate(user.date)}}</ion-col>
     <ion-col size="12" class="ion-text-end"> <!-- Coluna ocupando toda a largura e alinhamento de texto à direita -->
       <ion-button fill="clear" color="white" routerLink="editarUsuario/{{ user.id }}">
         <ion-icon name="create-outline" slot="icon-only"></ion-icon>
