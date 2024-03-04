@@ -60,6 +60,9 @@ export class FormularioUsuarioComponent implements OnInit {
       date: new FormControl(this.userData ? this.userData.date : this.maxDate, [
         Validators.required,
         this.validateAge.bind(this)
+      ]),
+      gender: new FormControl(this.userData ? this.userData.gender : '', [
+        Validators.required
       ])
     });
   }
@@ -75,6 +78,9 @@ export class FormularioUsuarioComponent implements OnInit {
   }
   get date(){
     return this.userForm.get('date')!;
+  }
+  get gender(){
+    return this.userForm.get('gender');
   }
 
   async submit(formDirective: FormGroupDirective) {
