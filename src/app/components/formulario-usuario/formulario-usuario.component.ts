@@ -93,7 +93,7 @@ export class FormularioUsuarioComponent implements OnInit {
   }
   get productsSoja(){
     return this.userForm.get('productsSoja')!;
-
+  }
   get gender() {
     return this.userForm.get('gender')!;
   }

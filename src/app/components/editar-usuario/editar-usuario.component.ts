@@ -36,7 +36,8 @@ export class EditarUsuarioComponent implements OnInit {
       user.productsMilho,
       user.productsArroz,
       user.productsSoja,
-      user.gender
+      user.gender,
+      user.pdfBase64
     );
     const alert = await this.alertController.create({
       header: 'Sucesso',
