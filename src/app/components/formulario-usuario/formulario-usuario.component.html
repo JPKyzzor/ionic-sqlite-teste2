@@ -63,11 +63,13 @@
   <!--Campo data-->
   <ion-item>
     <ion-label position="start">Data de nascimento: </ion-label>
-    <ion-datetime-button datetime="{{this.userData ? 'dateEdit' : 'dateAdd'}}"></ion-datetime-button>
+    <ion-datetime-button
+      datetime="{{ this.userData ? 'dateEdit' : 'dateAdd' }}"
+    ></ion-datetime-button>
     <ion-modal [keepContentsMounted]="true">
       <ng-template>
         <ion-datetime
-          id="{{this.userData ? 'dateEdit' : 'dateAdd'}}"
+          id="{{ this.userData ? 'dateEdit' : 'dateAdd' }}"
           presentation="date"
           formControlName="date"
           max="{{ maxDate }}"
@@ -95,6 +97,27 @@
     <p>Pelo menos um produto deve ser selecionado.</p>
   </div>
 
+  <!--Campo Genero-->
+  <h6>Genero</h6>
+  <ion-item>
+    <ion-radio-group formControlName="gender">
+      <ion-radio value="Masculino" labelPlacement="end" justify="start">Masculino</ion-radio>
+      <ion-radio value="Feminino" labelPlacement="end" justify="start">Feminino</ion-radio>
+      <ion-radio value="Não binário" labelPlacement="end" justify="start">Não binário</ion-radio>
+      <ion-radio value="Não informado" labelPlacement="end" justify="start">Prefiro não informar</ion-radio>
+    </ion-radio-group>
+  </ion-item>
+  <div class="validation-error" *ngIf="height.invalid && formDir.submitted">
+  <p *ngIf="gender.errors?.['required']">O genero é obrigatório.</p>
+  </div>
+  <!--Campo PDF-->
+  <ion-item>
+    <input type="file" (change)="handleFileInput($event)" accept=".pdf" />
+  </ion-item>
+  <div class="validation-error" *ngIf="pdfBase64.invalid && formDir.submitted">
+    <p *ngIf="pdfBase64.errors?.['required']">O documento é necessário.</p>
+  </div>
+  
   <!-- Botão para criar usuário -->
   <ion-button expand="block" type="submit">{{ btnText }}</ion-button>
 </form>

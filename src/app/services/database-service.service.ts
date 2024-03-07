@@ -12,6 +12,8 @@ export interface User {
   productsMilho:boolean;
   productsArroz:boolean;
   productsSoja:boolean;
+  gender: string;
+  pdfBase64: string;
 }
 
 @Injectable({
@@ -57,7 +59,9 @@ export class DatabaseService {
         date TEXT NOT NULL,
         productsMilho BOOLEAN,
         productsArroz BOOLEAN,
-        productsSoja BOOLEAN
+        productsSoja BOOLEAN,
+        gender TEXT NOT NULL,
+        pdfBase64 TEXT NOT NULL
       );`;
 
       await this.db.execute(schema);
@@ -78,18 +82,18 @@ export class DatabaseService {
     this.users.set(users.values || []);
   }
 
-  async addUser(name: string, cpf: string, height: number, date: string, productsMilho: boolean, productsArroz: boolean, productsSoja: boolean) {
-    const query = `INSERT INTO Users (name, cpf, height, date, productsMilho, productsArroz, productsSoja) VALUES (?, ?, ?, ?, ?, ?, ?);`;
-    const result = await this.db.query(query, [name, cpf, height, date, productsMilho ? 1 : 0, productsArroz ? 1 : 0, productsSoja ? 1 : 0]);
+  async addUser(name: string, cpf: string, height: number, date: string, productsMilho: boolean, productsArroz: boolean, productsSoja: boolean, gender:string, pdfBase64:string) {
+    const query = `INSERT INTO Users (name, cpf, height, date, productsMilho, productsArroz, productsSoja, gender, pdfBase64) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+    const result = await this.db.query(query, [name, cpf, height, date, productsMilho ? 1 : 0, productsArroz ? 1 : 0, productsSoja ? 1 : 0, gender, pdfBase64], );
 
     this.loadUsers();
 
     return result;
   }
 
-  async updateUserByID(id: number, nome: string, cpf: string, height: number, date: string, productsMilho:boolean, productsArroz:boolean, productsSoja:boolean) {
-    const query = `UPDATE Users SET name=?, cpf=?, height=?, date=?, productsMilho=?, productsArroz=?, productsSoja=? WHERE id=?;`;
-    const result = await this.db.query(query, [nome, cpf, height, date, productsMilho, productsArroz, productsSoja, id]);
+  async updateUserByID(id: number, nome: string, cpf: string, height: number, date: string, productsMilho:boolean, productsArroz:boolean, productsSoja:boolean, gender:string, pdfBase64:string) {
+    const query = `UPDATE Users SET name=?, cpf=?, height=?, date=?, productsMilho=?, productsArroz=?, productsSoja=?, gender=?, pdfBase64=? WHERE id=?;`;
+    const result = await this.db.query(query, [nome, cpf, height, date, productsMilho, productsArroz, productsSoja, gender, pdfBase64, id]);
 
     // Atualize os usuários após a atualização
     await this.loadUsers();

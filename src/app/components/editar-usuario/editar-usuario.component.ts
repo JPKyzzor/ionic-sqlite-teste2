@@ -35,7 +35,8 @@ export class EditarUsuarioComponent implements OnInit {
       user.date,
       user.productsMilho,
       user.productsArroz,
-      user.productsSoja
+      user.productsSoja,
+      user.gender
     );
     const alert = await this.alertController.create({
       header: 'Sucesso',
