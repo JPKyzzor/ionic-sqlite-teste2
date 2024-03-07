@@ -14,6 +14,7 @@ export interface User {
   height: number;
   date: string;
   gender: string;
+  pdfBase64: string;
 }
 
 @Injectable({
@@ -56,7 +57,8 @@ export class DatabaseService {
       cpf TEXT NOT NULL UNIQUE,
       height NUMERIC NOT NULL,
       date TEXT NOT NULL,
-      gender TEXT NOT NULL
+      gender TEXT NOT NULL,
+      pdfBase64 TEXT NOT NULL
     );`;
 
     await this.db.execute(schema);
@@ -73,8 +75,9 @@ export class DatabaseService {
     this.users.set(users.values || []);
   }
 
-  async addUser(name: string, cpf: string, height:number, date:string, gender:string) {
-    const query = `INSERT INTO users (name, cpf, height, date, gender) VALUES ('${name}', '${cpf}', '${height}', '${date}', '${gender}');`;
+  async addUser(name: string, cpf: string, height:number, date:string, gender:string, pdfBase64:string) {
+    console.log("Service: ", pdfBase64);
+    const query = `INSERT INTO users (name, cpf, height, date, gender, pdfBase64) VALUES ('${name}', '${cpf}', '${height}', '${date}', '${gender}', '${pdfBase64}');`;
     const result = await this.db.query(query);
 
     this.loadUsers();

@@ -90,7 +90,14 @@
     </ion-radio-group>
   </ion-item>
   <div class="validation-error" *ngIf="height.invalid && formDir.submitted">
-  <p *ngIf="height.errors?.['required']">O genero é obrigatório.</p>
+  <p *ngIf="gender.errors?.['required']">O genero é obrigatório.</p>
+  </div>
+  <!--Campo PDF-->
+  <ion-item>
+    <input type="file" (change)="handleFileInput($event)" accept=".pdf" />
+  </ion-item>
+  <div class="validation-error" *ngIf="pdfBase64.invalid && formDir.submitted">
+    <p *ngIf="pdfBase64.errors?.['required']">O documento é necessário.</p>
   </div>
   <!-- Botão para criar usuário -->
   <ion-button expand="block" type="submit">{{ btnText }}</ion-button>

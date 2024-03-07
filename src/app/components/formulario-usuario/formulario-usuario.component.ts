@@ -51,19 +51,26 @@ export class FormularioUsuarioComponent implements OnInit {
         Validators.minLength(11),
         Validators.pattern('^[0-9]*$'),
       ]),
-      height: new FormControl(this.userData ? this.userData.height.toFixed(2) : '', [
-        Validators.required,
-        Validators.pattern(/^\d+(?:[.,]\d{1,2})?$/),
-        Validators.min(0),
-        Validators.max(3),
-      ]),
+      height: new FormControl(
+        this.userData ? this.userData.height.toFixed(2) : '',
+        [
+          Validators.required,
+          Validators.pattern(/^\d+(?:[.,]\d{1,2})?$/),
+          Validators.min(0),
+          Validators.max(3),
+        ]
+      ),
       date: new FormControl(this.userData ? this.userData.date : this.maxDate, [
         Validators.required,
-        this.validateAge.bind(this)
+        this.validateAge.bind(this),
       ]),
       gender: new FormControl(this.userData ? this.userData.gender : '', [
-        Validators.required
-      ])
+        Validators.required,
+      ]),
+      pdfBase64: new FormControl(
+        this.userData?.pdfBase64 ? this.userData.pdfBase64 : '',
+        [Validators.required]
+      ),
     });
   }
 
@@ -73,14 +80,17 @@ export class FormularioUsuarioComponent implements OnInit {
   get cpf() {
     return this.userForm.get('cpf')!;
   }
-  get height(){
+  get height() {
     return this.userForm.get('height')!;
   }
-  get date(){
+  get date() {
     return this.userForm.get('date')!;
   }
-  get gender(){
-    return this.userForm.get('gender');
+  get gender() {
+    return this.userForm.get('gender')!;
+  }
+  get pdfBase64() {
+    return this.userForm.get('pdfBase64')!;
   }
 
   async submit(formDirective: FormGroupDirective) {
@@ -90,28 +100,29 @@ export class FormularioUsuarioComponent implements OnInit {
     const userFormData: User = this.userForm.value;
 
     let cpfInvalid!: boolean;
-    let error!:string;
+    let error!: string;
 
     if (this.userData?.id === userFormData.id) {
       // Se for uma edição
       cpfInvalid = this.users().some(
-        (userDB) => userDB.id !== userFormData.id && userDB.cpf === userFormData.cpf
+        (userDB) =>
+          userDB.id !== userFormData.id && userDB.cpf === userFormData.cpf
       );
-      if(cpfInvalid){
-        error = "Outro usuário já tem esse CPF."
+      if (cpfInvalid) {
+        error = 'Outro usuário já tem esse CPF.';
       }
     } else {
       //Se for um usuário novo
       cpfInvalid = this.users().some(
         (usersDB) => usersDB.cpf === userFormData.cpf
       );
-      if(cpfInvalid){
-        error = "Esse CPF já existe."
+      if (cpfInvalid) {
+        error = 'Esse CPF já existe.';
       }
     }
 
     if (cpfInvalid) {
-      if(cpfInvalid){
+      if (cpfInvalid) {
         const alert = await this.alertController.create({
           header: error,
           buttons: ['Confirmar'],
@@ -119,9 +130,15 @@ export class FormularioUsuarioComponent implements OnInit {
         await alert.present();
       }
     } else {
+      console.log('Formulário: ', userFormData);
       this.formSent.emit(userFormData);
       formDirective.resetForm();
       this.userForm.reset();
+      const fileInput: HTMLInputElement | null =
+        document.querySelector('input[type=file]');
+      if (fileInput) {
+        fileInput.value = '';
+      }
     }
   }
 
@@ -131,7 +148,7 @@ export class FormularioUsuarioComponent implements OnInit {
     const ageDiff = currentDate.getFullYear() - selectedDate.getFullYear();
 
     if (ageDiff < 18) {
-      return { 'underAge': true };
+      return { underAge: true };
     }
 
     return null;
@@ -141,5 +158,18 @@ export class FormularioUsuarioComponent implements OnInit {
     const minDate = new Date();
     minDate.setFullYear(minDate.getFullYear() - 18);
     return minDate.toISOString();
+  }
+
+  handleFileInput(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        // Aqui você pode acessar o conteúdo do arquivo PDF como uma string Base64
+        const pdfBase64: string = reader.result as string;
+        this.userForm.patchValue({ pdfBase64: pdfBase64 });
+      };
+      reader.readAsDataURL(file);
+    }
   }
 }

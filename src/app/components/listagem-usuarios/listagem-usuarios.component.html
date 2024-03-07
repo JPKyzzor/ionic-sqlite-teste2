@@ -14,9 +14,13 @@
     <ion-col size="5" class="data">{{ user.name }} </ion-col>
     <ion-col size="4" class="data">{{ user.cpf }} </ion-col>
     <ion-col size="2">{{ user.height.toFixed(2).replace('.',',') }}</ion-col>
-    <ion-col size="6" class="data">{{formatDate(user.date)}}</ion-col>
-    <ion-col size="6" class="data">{{user.gender}}</ion-col>
-    <ion-col size="12" class="ion-text-end"> <!-- Coluna ocupando toda a largura e alinhamento de texto à direita -->
+    <ion-col size="4" class="data">{{formatDate(user.date)}}</ion-col>
+    <ion-col size="4" class="data">{{user.gender}}</ion-col>
+    <!--Preciso de ajuda aqui, para abrir o PDF-->
+    <ion-col size="4" class="data"><ion-button (click)="openPDF(user.pdfBase64)" fill="clear" color="primary">
+      Abrir PDF
+    </ion-button></ion-col>
+    <ion-col size="12" class="ion-text-end">
       <ion-button fill="clear" color="white" routerLink="editarUsuario/{{ user.id }}">
         <ion-icon name="create-outline" slot="icon-only"></ion-icon>
       </ion-button>

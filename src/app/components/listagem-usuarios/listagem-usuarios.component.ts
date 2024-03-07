@@ -15,7 +15,7 @@ export class ListagemUsuariosComponent {
 
   constructor(
     private database: DatabaseService,
-    private alertController: AlertController
+    private alertController: AlertController,
   ) {}
 
   async deleteUser(user: User) {
@@ -25,5 +25,9 @@ export class ListagemUsuariosComponent {
   formatDate(dateString: string): string {
     const date = new Date(dateString);
     return date.toLocaleDateString('pt-BR');
+  }
+
+  openPDF(pdfBase64: string) {
+    console.log(pdfBase64);
   }
 }
