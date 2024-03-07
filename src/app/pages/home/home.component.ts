@@ -16,8 +16,9 @@ export class HomeComponent{
 
 
   async createUser(user:User) {
-    await this.dbSVC.addUser(user.name, user.cpf, user.height, user.date);
+    await this.dbSVC.addUser(user.name, user.cpf, user.height, user.date, user.productsMilho, user.productsArroz, user.productsSoja);
     const alert = await this.alertController.create({
+
       header: 'Sucesso',
       message: 'Usuário adicionado com sucesso',
       buttons: ['OK'],

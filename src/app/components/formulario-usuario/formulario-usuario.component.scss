@@ -13,3 +13,19 @@
 ion-datetime{
   padding-top: 32px;
 }
+
+#products{
+  margin-left: 1em;
+  font-weight: 500;
+}
+
+ion-list{
+  display: flex;
+  flex-direction: row;
+  gap: 4.4em;
+}
+
+#products{
+  display: block;
+}
+

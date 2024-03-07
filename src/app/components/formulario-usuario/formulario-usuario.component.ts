@@ -1,18 +1,7 @@
-import {
-  DatabaseService,
-  User,
-} from 'src/app/services/database-service.service';
+import { DatabaseService, User,} from 'src/app/services/database-service.service';
 import { Component, EventEmitter, OnInit, input } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-  NgForm,
-  FormGroupDirective,
-  AbstractControl,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators, NgForm, FormGroupDirective, AbstractControl, } from '@angular/forms';
 import { ViewChild } from '@angular/core';
 import { Input, Output } from '@angular/core';
 
@@ -60,6 +49,15 @@ export class FormularioUsuarioComponent implements OnInit {
       date: new FormControl(this.userData ? this.userData.date : this.maxDate, [
         Validators.required,
         this.validateAge.bind(this)
+      ]),
+      productsMilho: new FormControl(this.userData ? this.userData.productsMilho : false, [
+        Validators.required,
+      ]),
+      productsArroz: new FormControl(this.userData ? this.userData.productsArroz : false, [
+        Validators.required,
+      ]),
+      productsSoja: new FormControl(this.userData ? this.userData.productsSoja : false, [
+        Validators.required,
       ])
     });
   }
@@ -76,13 +74,22 @@ export class FormularioUsuarioComponent implements OnInit {
   get date(){
     return this.userForm.get('date')!;
   }
+  get productsMilho(){
+    return this.userForm.get('productsMilho')!;
+  }
+  get productsArroz(){
+    return this.userForm.get('productsArroz')!;
+  }
+  get productsSoja(){
+    return this.userForm.get('productsSoja')!;
+  }
 
   async submit(formDirective: FormGroupDirective) {
+    console.log(this.userForm.value);
     if (this.userForm.invalid) {
       return;
     }
     const userFormData: User = this.userForm.value;
-
     let cpfInvalid!: boolean;
     let error!:string;
 
@@ -116,8 +123,9 @@ export class FormularioUsuarioComponent implements OnInit {
       this.formSent.emit(userFormData);
       formDirective.resetForm();
       this.userForm.reset();
+      this.limparValoresCheckboxes();
     }
-  }
+ }
 
   validateAge(control: AbstractControl): { [key: string]: boolean } | null {
     const currentDate = new Date();
@@ -135,5 +143,27 @@ export class FormularioUsuarioComponent implements OnInit {
     const minDate = new Date();
     minDate.setFullYear(minDate.getFullYear() - 18);
     return minDate.toISOString();
+  }
+
+  validateCheckbox() {
+    var products = document.querySelectorAll('ion-checkbox');
+    var check = false;
+
+    for (var i = 0; i < products.length; i++) {
+        if (products[i].checked) {
+            check = true;
+            break;
+        }
+    }
+    if (!check) {
+        return false;
+    }
+    return true;
+  }
+
+  limparValoresCheckboxes() {
+    this.userForm.get('productsArroz')?.setValue(false);
+    this.userForm.get('productsSoja')?.setValue(false);
+    this.userForm.get('productsMilho')?.setValue(false);
   }
 }

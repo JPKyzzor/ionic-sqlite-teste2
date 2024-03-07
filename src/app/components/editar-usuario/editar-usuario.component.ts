@@ -1,9 +1,6 @@
 import { AlertController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
-import {
-  User,
-  DatabaseService,
-} from 'src/app/services/database-service.service';
+import { User, DatabaseService } from 'src/app/services/database-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -35,7 +32,10 @@ export class EditarUsuarioComponent implements OnInit {
       user.name,
       user.cpf,
       user.height,
-      user.date
+      user.date,
+      user.productsMilho,
+      user.productsArroz,
+      user.productsSoja
     );
     const alert = await this.alertController.create({
       header: 'Sucesso',
