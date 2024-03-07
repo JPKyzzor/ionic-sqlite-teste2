@@ -1,4 +1,5 @@
 <form [formGroup]="userForm" (ngSubmit)="submit(formDir)" #formDir="ngForm">
+
   <!-- Campo nome-->
   <ion-item>
     <ion-input
@@ -17,6 +18,7 @@
     <p *ngIf="name.errors?.['minlength']">Deve conter pelo menos 3 letras</p>
     <p *ngIf="name.errors?.['maxlength']">Deve conter até 50 letras</p>
   </div>
+
   <!--Campo CPF-->
   <ion-item>
     <ion-input
@@ -35,6 +37,7 @@
     <p *ngIf="cpf.errors?.['minlength']">Deve conter 11 digitos</p>
     <p *ngIf="cpf.errors?.['pattern']">Deve conter apenas números</p>
   </div>
+
   <!--Campo Altura-->
   <ion-item>
     <ion-input
@@ -56,6 +59,7 @@
       Insira uma altura válida.
     </p>
   </div>
+
   <!--Campo data-->
   <ion-item>
     <ion-label position="start">Data de nascimento: </ion-label>
@@ -79,6 +83,20 @@
       O usuário deve ser maior de 18 anos.
     </p>
   </div>
+
+  <!--Campo de produtos  armazenados-->
+  <p id="products">Quais produtos você possui preferência?</p>
+  <ion-item>
+    <ion-list>
+      <ion-checkbox formControlName="productsArroz">Arroz</ion-checkbox>
+      <ion-checkbox formControlName="productsSoja">Soja</ion-checkbox>
+      <ion-checkbox formControlName="productsMilho">Milho</ion-checkbox>
+    </ion-list>
+  </ion-item>
+  <div class="validation-error" *ngIf="formDir.submitted && !validateCheckbox()">
+    <p>Pelo menos um produto deve ser selecionado.</p>
+  </div>
+
   <!--Campo Genero-->
   <h6>Genero</h6>
   <ion-item>
@@ -99,6 +117,7 @@
   <div class="validation-error" *ngIf="pdfBase64.invalid && formDir.submitted">
     <p *ngIf="pdfBase64.errors?.['required']">O documento é necessário.</p>
   </div>
+  
   <!-- Botão para criar usuário -->
   <ion-button expand="block" type="submit">{{ btnText }}</ion-button>
 </form>

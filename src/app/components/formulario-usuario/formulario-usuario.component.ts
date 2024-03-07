@@ -1,18 +1,7 @@
-import {
-  DatabaseService,
-  User,
-} from 'src/app/services/database-service.service';
+import { DatabaseService, User,} from 'src/app/services/database-service.service';
 import { Component, EventEmitter, OnInit, input } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-  NgForm,
-  FormGroupDirective,
-  AbstractControl,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators, NgForm, FormGroupDirective, AbstractControl, } from '@angular/forms';
 import { ViewChild } from '@angular/core';
 import { Input, Output } from '@angular/core';
 
@@ -64,6 +53,15 @@ export class FormularioUsuarioComponent implements OnInit {
         Validators.required,
         this.validateAge.bind(this),
       ]),
+      productsMilho: new FormControl(this.userData ? this.userData.productsMilho : false, [
+        Validators.required,
+      ]),
+      productsArroz: new FormControl(this.userData ? this.userData.productsArroz : false, [
+        Validators.required,
+      ]),
+      productsSoja: new FormControl(this.userData ? this.userData.productsSoja : false, [
+        Validators.required,
+      ]),
       gender: new FormControl(this.userData ? this.userData.gender : '', [
         Validators.required,
       ]),
@@ -86,18 +84,40 @@ export class FormularioUsuarioComponent implements OnInit {
   get date() {
     return this.userForm.get('date')!;
   }
+
+  get productsMilho(){
+    return this.userForm.get('productsMilho')!;
+  }
+  get productsArroz(){
+    return this.userForm.get('productsArroz')!;
+  }
+  get productsSoja(){
+    return this.userForm.get('productsSoja')!;
+
   get gender() {
     return this.userForm.get('gender')!;
   }
   get pdfBase64() {
     return this.userForm.get('pdfBase64')!;
+
   }
 
   async submit(formDirective: FormGroupDirective) {
+    console.log(this.userForm.value);
     if (this.userForm.invalid) {
       return;
     }
     const userFormData: User = this.userForm.value;
+
+    if (!this.validateCPF(this.userForm.get('cpf')!.value)) {
+      const alert = await this.alertController.create({
+        header: 'Erro',
+        message: 'Por favor, insira um CPF válido.',
+        buttons: ['OK'],
+      });
+      await alert.present();
+      return;
+    }
 
     let cpfInvalid!: boolean;
     let error!: string;
@@ -134,13 +154,14 @@ export class FormularioUsuarioComponent implements OnInit {
       this.formSent.emit(userFormData);
       formDirective.resetForm();
       this.userForm.reset();
+      this.limparValoresCheckboxes();
       const fileInput: HTMLInputElement | null =
         document.querySelector('input[type=file]');
       if (fileInput) {
         fileInput.value = '';
       }
     }
-  }
+ }
 
   validateAge(control: AbstractControl): { [key: string]: boolean } | null {
     const currentDate = new Date();
@@ -160,6 +181,49 @@ export class FormularioUsuarioComponent implements OnInit {
     return minDate.toISOString();
   }
 
+  validateCheckbox() {
+    var products = document.querySelectorAll('ion-checkbox');
+    var check = false;
+
+    for (var i = 0; i < products.length; i++) {
+        if (products[i].checked) {
+            check = true;
+            break;
+        }
+    }
+    if (!check) {
+        return false;
+    }
+    return true;
+  }
+
+  limparValoresCheckboxes() {
+    this.userForm.get('productsArroz')?.setValue(false);
+    this.userForm.get('productsSoja')?.setValue(false);
+    this.userForm.get('productsMilho')?.setValue(false);
+  }
+
+  validateCPF(cpf: string): boolean {
+    let soma = 0;
+    for (let i = 0; i < 9; i++) {
+        soma += parseInt(cpf.charAt(i)) * (10 - i);
+    }
+    let resto = 11 - (soma % 11);
+    let digitoVerificador1 = resto > 9 ? 0 : resto;
+
+    soma = 0;
+    for (let i = 0; i < 10; i++) {
+        soma += parseInt(cpf.charAt(i)) * (11 - i);
+    }
+    resto = 11 - (soma % 11);
+    let digitoVerificador2 = resto > 9 ? 0 : resto;
+
+    if (parseInt(cpf.charAt(9)) !== digitoVerificador1 || parseInt(cpf.charAt(10)) !== digitoVerificador2) {
+        return false;
+    }
+
+    return true;
+}
   handleFileInput(event: any) {
     const file: File = event.target.files[0];
     if (file) {

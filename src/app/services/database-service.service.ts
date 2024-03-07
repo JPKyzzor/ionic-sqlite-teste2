@@ -1,9 +1,5 @@
 import { Injectable, WritableSignal, signal } from '@angular/core';
-import {
-  CapacitorSQLite,
-  SQLiteConnection,
-  SQLiteDBConnection,
-} from '@capacitor-community/sqlite';
+import { CapacitorSQLite, SQLiteConnection, SQLiteDBConnection} from '@capacitor-community/sqlite';
 
 const DB_USERS = 'myuserdb';
 
@@ -13,6 +9,9 @@ export interface User {
   cpf: string;
   height: number;
   date: string;
+  productsMilho:boolean;
+  productsArroz:boolean;
+  productsSoja:boolean;
   gender: string;
   pdfBase64: string;
 }
@@ -41,29 +40,37 @@ export class DatabaseService {
   constructor() {}
 
   async initializePlugin() {
-    this.db = await this.sqlite.createConnection(
-      DB_USERS,
-      false,
-      'no-encryption',
-      1,
-      false
-    );
+    try {
+      this.db = await this.sqlite.createConnection(
+        DB_USERS,
+        false,
+        'no-encryption',
+        1,
+        false
+      );
 
-    await this.db.open();
+      await this.db.open();
 
-    const schema = `CREATE TABLE IF NOT EXISTS users(
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
-      cpf TEXT NOT NULL UNIQUE,
-      height NUMERIC NOT NULL,
-      date TEXT NOT NULL,
-      gender TEXT NOT NULL,
-      pdfBase64 TEXT NOT NULL
-    );`;
+      const schema = `CREATE TABLE IF NOT EXISTS users(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        cpf TEXT NOT NULL UNIQUE,
+        height NUMERIC NOT NULL,
+        date TEXT NOT NULL,
+        productsMilho BOOLEAN,
+        productsArroz BOOLEAN,
+        productsSoja BOOLEAN,
+        gender TEXT NOT NULL,
+        pdfBase64 TEXT NOT NULL
+      );`;
 
-    await this.db.execute(schema);
-    this.loadUsers();
-    return true;
+      await this.db.execute(schema);
+      this.loadUsers();
+      return true;
+    } catch (error) {
+      console.error('Erro durante a inicialização do banco de dados:', error);
+      return false;
+    }
   }
 
   getUsers() {
@@ -75,19 +82,18 @@ export class DatabaseService {
     this.users.set(users.values || []);
   }
 
-  async addUser(name: string, cpf: string, height:number, date:string, gender:string, pdfBase64:string) {
-    console.log("Service: ", pdfBase64);
-    const query = `INSERT INTO users (name, cpf, height, date, gender, pdfBase64) VALUES ('${name}', '${cpf}', '${height}', '${date}', '${gender}', '${pdfBase64}');`;
-    const result = await this.db.query(query);
+  async addUser(name: string, cpf: string, height: number, date: string, productsMilho: boolean, productsArroz: boolean, productsSoja: boolean, gender:string, pdfBase64:string) {
+    const query = `INSERT INTO Users (name, cpf, height, date, productsMilho, productsArroz, productsSoja, gender, pdfBase64) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+    const result = await this.db.query(query, [name, cpf, height, date, productsMilho ? 1 : 0, productsArroz ? 1 : 0, productsSoja ? 1 : 0, gender, pdfBase64], );
 
     this.loadUsers();
 
     return result;
   }
 
-  async updateUserByID(id: number, nome: string, cpf: string, height:number, date:string, gender:string) {
-    const query = `UPDATE users SET name='${nome}', cpf='${cpf}', height='${height}', date='${date}', gender='${gender}' WHERE id='${id}';`;
-    const result = await this.db.query(query);
+  async updateUserByID(id: number, nome: string, cpf: string, height: number, date: string, productsMilho:boolean, productsArroz:boolean, productsSoja:boolean, gender:string, pdfBase64:string) {
+    const query = `UPDATE Users SET name=?, cpf=?, height=?, date=?, productsMilho=?, productsArroz=?, productsSoja=?, gender=?, pdfBase64=? WHERE id=?;`;
+    const result = await this.db.query(query, [nome, cpf, height, date, productsMilho, productsArroz, productsSoja, gender, pdfBase64, id]);
 
     // Atualize os usuários após a atualização
     await this.loadUsers();
@@ -111,4 +117,5 @@ export class DatabaseService {
       result.values && result.values.length > 0 ? result.values[0] : null;
     return user || null;
   }
+
 }
