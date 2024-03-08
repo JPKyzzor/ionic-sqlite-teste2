@@ -39,6 +39,7 @@ export class FormularioUsuarioComponent implements OnInit {
         Validators.maxLength(11),
         Validators.minLength(11),
         Validators.pattern('^[0-9]*$'),
+        this.validateCPF.bind(this),
       ]),
       height: new FormControl(
         this.userData ? this.userData.height.toFixed(2) : '',
@@ -93,7 +94,7 @@ export class FormularioUsuarioComponent implements OnInit {
   }
   get productsSoja(){
     return this.userForm.get('productsSoja')!;
-
+  }
   get gender() {
     return this.userForm.get('gender')!;
   }
@@ -108,17 +109,6 @@ export class FormularioUsuarioComponent implements OnInit {
       return;
     }
     const userFormData: User = this.userForm.value;
-
-    if (!this.validateCPF(this.userForm.get('cpf')!.value)) {
-      const alert = await this.alertController.create({
-        header: 'Erro',
-        message: 'Por favor, insira um CPF válido.',
-        buttons: ['OK'],
-      });
-      await alert.present();
-      return;
-    }
-
     let cpfInvalid!: boolean;
     let error!: string;
 
@@ -203,7 +193,9 @@ export class FormularioUsuarioComponent implements OnInit {
     this.userForm.get('productsMilho')?.setValue(false);
   }
 
-  validateCPF(cpf: string): boolean {
+  validateCPF(control: AbstractControl): { [key: string]: boolean } | null {
+    const cpf = control.value;
+
     let soma = 0;
     for (let i = 0; i < 9; i++) {
         soma += parseInt(cpf.charAt(i)) * (10 - i);
@@ -217,12 +209,20 @@ export class FormularioUsuarioComponent implements OnInit {
     }
     resto = 11 - (soma % 11);
     let digitoVerificador2 = resto > 9 ? 0 : resto;
+    console.log(cpf.charAt(9));
+    console.log(cpf.charAt(10));
+    console.log(digitoVerificador1);
+    console.log(digitoVerificador2);
 
     if (parseInt(cpf.charAt(9)) !== digitoVerificador1 || parseInt(cpf.charAt(10)) !== digitoVerificador2) {
-        return false;
+      console.log(cpf.charAt(9));
+      console.log(cpf.charAt(10));
+      console.log(digitoVerificador1);
+      console.log(digitoVerificador2);
+        return { CPFinvalido: true };
     }
 
-    return true;
+    return null;
 }
   handleFileInput(event: any) {
     const file: File = event.target.files[0];
