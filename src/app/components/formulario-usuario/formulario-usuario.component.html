@@ -33,9 +33,10 @@
     ></ion-input>
   </ion-item>
   <div class="validation-error" *ngIf="cpf.invalid && formDir.submitted">
-    <p *ngIf="cpf.errors?.['required']">O cpf é obrigatório.</p>
+    <p *ngIf="cpf.errors?.['required']">O CPF é obrigatório.</p>
     <p *ngIf="cpf.errors?.['minlength']">Deve conter 11 digitos</p>
     <p *ngIf="cpf.errors?.['pattern']">Deve conter apenas números</p>
+    <p *ngIf="cpf.errors?.['CPFinvalido']">CPF inválido</p>
   </div>
 
   <!--Campo Altura-->
@@ -117,7 +118,7 @@
   <div class="validation-error" *ngIf="pdfBase64.invalid && formDir.submitted">
     <p *ngIf="pdfBase64.errors?.['required']">O documento é necessário.</p>
   </div>
-  
+
   <!-- Botão para criar usuário -->
   <ion-button expand="block" type="submit">{{ btnText }}</ion-button>
 </form>
