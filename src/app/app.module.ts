@@ -13,11 +13,13 @@ import { EditarUsuarioComponent } from './components/editar-usuario/editar-usuar
 import { HomeComponent } from './pages/home/home.component';
 import { Home1Component } from './pages/home1/home1.component';
 import { Home2Component } from './pages/home2/home2.component';
+import { IonicStorageDatabaseService } from './services/ionic-storage-database.service';
+import { IonicStorageModule } from '@ionic/storage-angular';
 
 @NgModule({
   declarations: [AppComponent, FormularioUsuarioComponent, ListagemUsuariosComponent, EditarUsuarioComponent, HomeComponent, Home1Component, Home2Component],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, ReactiveFormsModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, ReactiveFormsModule, IonicStorageModule.forRoot()],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, IonicStorageDatabaseService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
