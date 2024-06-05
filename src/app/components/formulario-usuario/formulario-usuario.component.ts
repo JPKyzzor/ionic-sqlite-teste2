@@ -27,6 +27,7 @@ export class FormularioUsuarioComponent implements OnInit {
 
   ngOnInit() {
     const dataTeste = new Date();
+    console.log(this.userData);
     this.userForm = new FormGroup({
       id: new FormControl(this.userData ? this.userData.id : ''),
       name: new FormControl(this.userData ? this.userData.name : '', [
@@ -39,7 +40,7 @@ export class FormularioUsuarioComponent implements OnInit {
         Validators.maxLength(11),
         Validators.minLength(11),
         Validators.pattern('^[0-9]*$'),
-        this.validateCPF.bind(this),
+        //this.validateCPF.bind(this),
       ]),
       height: new FormControl(
         this.userData ? this.userData.height.toFixed(2) : '',
@@ -104,14 +105,15 @@ export class FormularioUsuarioComponent implements OnInit {
   }
 
   async submit(formDirective: FormGroupDirective) {
-    console.log(this.userForm.value);
     if (this.userForm.invalid) {
       return;
     }
     const userFormData: User = this.userForm.value;
-    let cpfInvalid!: boolean;
+    let cpfInvalid: boolean = false;
     let error!: string;
 
+    /*
+    Comentado até arrumar o bug do edit
     if (this.userData?.id === userFormData.id) {
       // Se for uma edição
       cpfInvalid = this.users().some(
@@ -129,7 +131,7 @@ export class FormularioUsuarioComponent implements OnInit {
       if (cpfInvalid) {
         error = 'Esse CPF já existe.';
       }
-    }
+    }*/
 
     if (cpfInvalid) {
       if (cpfInvalid) {
@@ -140,7 +142,8 @@ export class FormularioUsuarioComponent implements OnInit {
         await alert.present();
       }
     } else {
-      console.log('Formulário: ', userFormData);
+      console.log("Formdata: ");
+      console.log(userFormData);
       this.formSent.emit(userFormData);
       formDirective.resetForm();
       this.userForm.reset();
@@ -193,7 +196,7 @@ export class FormularioUsuarioComponent implements OnInit {
     this.userForm.get('productsMilho')?.setValue(false);
   }
 
-  validateCPF(control: AbstractControl): { [key: string]: boolean } | null {
+  /*validateCPF(control: AbstractControl): { [key: string]: boolean } | null {
     const cpf = control.value;
 
     let soma = 0;
@@ -209,21 +212,13 @@ export class FormularioUsuarioComponent implements OnInit {
     }
     resto = 11 - (soma % 11);
     let digitoVerificador2 = resto > 9 ? 0 : resto;
-    console.log(cpf.charAt(9));
-    console.log(cpf.charAt(10));
-    console.log(digitoVerificador1);
-    console.log(digitoVerificador2);
 
     if (parseInt(cpf.charAt(9)) !== digitoVerificador1 || parseInt(cpf.charAt(10)) !== digitoVerificador2) {
-      console.log(cpf.charAt(9));
-      console.log(cpf.charAt(10));
-      console.log(digitoVerificador1);
-      console.log(digitoVerificador2);
         return { CPFinvalido: true };
     }
 
     return null;
-}
+}*/
   handleFileInput(event: any) {
     const file: File = event.target.files[0];
     if (file) {

@@ -1,25 +1,24 @@
 import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import {
-  User,
-  DatabaseService,
-} from 'src/app/services/database-service.service';
+import { User, DatabaseService } from 'src/app/services/database-service.service';
+import { IonicStorageDatabaseService } from 'src/app/services/ionic-storage-database.service';
 
 @Component({
   selector: 'app-listagem-usuarios',
   templateUrl: './listagem-usuarios.component.html',
   styleUrls: ['./listagem-usuarios.component.scss'],
 })
-export class ListagemUsuariosComponent {
-  users = this.database.getUsers();
+export class ListagemUsuariosComponent{
+  users = this.isSVC.getAllUsers();
 
   constructor(
     private database: DatabaseService,
     private alertController: AlertController,
+    private isSVC: IonicStorageDatabaseService,
   ) {}
 
-  async deleteUser(user: User) {
-    this.database.deleteUserByID(user.id.toString());
+  async deleteUser(cpf: string) {
+    await this.isSVC.remove(cpf);
   }
 
   formatDate(dateString: string): string {

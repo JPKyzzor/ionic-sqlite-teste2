@@ -10,19 +10,24 @@ import { IonicStorageDatabaseService } from 'src/app/services/ionic-storage-data
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent{
-  users = this.dbSVC.getUsers();
+  users = this.isSVC.getAllUsers();
   btnText = "Adicionar";
 
-  constructor(private dbSVC:DatabaseService, private alertController:AlertController, private router:Router, private isSVC:IonicStorageDatabaseService) { }
+  constructor(private dbSVC:DatabaseService,
+     private alertController:AlertController,
+      private router:Router,
+       private isSVC:IonicStorageDatabaseService) { }
 
 
   async createUser(user:User) {
     //await this.dbSVC.addUser(user.name, user.cpf, user.height, user.date, user.productsMilho, user.productsArroz, user.productsSoja, user.gender, user.pdfBase64);
-    await this.isSVC.set('teste', user);
-    const teste = await this.isSVC.get('teste');
-    console.log(teste);
+    console.log("Vou setar:");
+    console.log(user);
+    await this.isSVC.set(user.cpf, user);
+    const result = await this.isSVC.get(user.cpf)
+    console.log("Voltou assim:");
+    console.log(result);
     const alert = await this.alertController.create({
-
       header: 'Sucesso',
       message: 'Usuário adicionado com sucesso',
       buttons: ['OK'],

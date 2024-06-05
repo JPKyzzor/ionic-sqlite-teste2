@@ -2,6 +2,7 @@ import { AlertController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { User, DatabaseService } from 'src/app/services/database-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IonicStorageDatabaseService } from 'src/app/services/ionic-storage-database.service';
 
 @Component({
   selector: 'app-editar-usuario',
@@ -13,32 +14,29 @@ export class EditarUsuarioComponent implements OnInit {
   btnText = 'Editar usuário';
 
   constructor(
-    private dbSVC: DatabaseService,
+    //private dbSVC: DatabaseService,
     private route: ActivatedRoute,
     private alertController: AlertController,
-    private router: Router
+    private router: Router,
+    private isSVC:IonicStorageDatabaseService
   ) {}
 
-  ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id')?.trim()!;
-    this.dbSVC.getUserByID(id).then((user) => {
-      this.user = user;
-    });
+  async ngOnInit(): Promise<void>{
+    const cpf = this.route.snapshot.paramMap.get('id')?.trim()!;
+    const usuarioParaEditar:User = await this.isSVC.get(cpf);
+    this.user = usuarioParaEditar;
   }
 
   async editUser(user: User) {
-    this.dbSVC.updateUserByID(
-      user.id,
-      user.name,
-      user.cpf,
-      user.height,
-      user.date,
-      user.productsMilho,
-      user.productsArroz,
-      user.productsSoja,
-      user.gender,
-      user.pdfBase64
-    );
+    console.log("Edição iniciou.");
+    const cpf = this.route.snapshot.paramMap.get('id')?.trim()!;
+    const usuarioParaDeletar:User = await this.isSVC.get(cpf);
+    console.log("Vou deletar:");
+    console.log(usuarioParaDeletar);
+    await this.isSVC.remove(cpf);
+    console.log("Vou adicionar: ");
+    console.log(user);
+    await this.isSVC.set(user.cpf, user);
     const alert = await this.alertController.create({
       header: 'Sucesso',
       message: 'Usuário editado com sucesso',
