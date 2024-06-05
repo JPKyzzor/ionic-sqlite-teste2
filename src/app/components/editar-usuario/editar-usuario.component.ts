@@ -22,21 +22,14 @@ export class EditarUsuarioComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void>{
-    const cpf = this.route.snapshot.paramMap.get('id')?.trim()!;
-    const usuarioParaEditar:User = await this.isSVC.get(cpf);
+    const id = this.route.snapshot.paramMap.get('id')!;
+    console.log("Pegando usuario: "+id);
+    const usuarioParaEditar:User = await this.isSVC.get(id);
     this.user = usuarioParaEditar;
   }
 
   async editUser(user: User) {
-    console.log("Edição iniciou.");
-    const cpf = this.route.snapshot.paramMap.get('id')?.trim()!;
-    const usuarioParaDeletar:User = await this.isSVC.get(cpf);
-    console.log("Vou deletar:");
-    console.log(usuarioParaDeletar);
-    await this.isSVC.remove(cpf);
-    console.log("Vou adicionar: ");
-    console.log(user);
-    await this.isSVC.set(user.cpf, user);
+    await this.isSVC.set(user.id, user);
     const alert = await this.alertController.create({
       header: 'Sucesso',
       message: 'Usuário editado com sucesso',

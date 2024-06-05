@@ -1,9 +1,9 @@
-import { DatabaseService, User,} from 'src/app/services/database-service.service';
-import { Component, EventEmitter, OnInit, input } from '@angular/core';
+import { v4 as uuidv4 } from 'uuid';
+import { Component, EventEmitter, OnInit, Input, Output, ViewChild } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators, NgForm, FormGroupDirective, AbstractControl, } from '@angular/forms';
-import { ViewChild } from '@angular/core';
-import { Input, Output } from '@angular/core';
+import { FormControl, FormGroup, Validators, NgForm, FormGroupDirective, AbstractControl } from '@angular/forms';
+import { IonicStorageDatabaseService } from './../../services/ionic-storage-database.service';
+import { DatabaseService, User } from 'src/app/services/database-service.service';
 
 @Component({
   selector: 'app-formulario-usuario',
@@ -17,17 +17,16 @@ export class FormularioUsuarioComponent implements OnInit {
   @Input() btnText!: string;
 
   userForm!: FormGroup;
-  users = this.database.getUsers();
+  users = this.isSVC.getAllUsers();
   maxDate: string = this.calculateMaxDate();
 
   constructor(
     private database: DatabaseService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private isSVC: IonicStorageDatabaseService
   ) {}
 
   ngOnInit() {
-    const dataTeste = new Date();
-    console.log(this.userData);
     this.userForm = new FormGroup({
       id: new FormControl(this.userData ? this.userData.id : ''),
       name: new FormControl(this.userData ? this.userData.name : '', [
@@ -40,10 +39,9 @@ export class FormularioUsuarioComponent implements OnInit {
         Validators.maxLength(11),
         Validators.minLength(11),
         Validators.pattern('^[0-9]*$'),
-        //this.validateCPF.bind(this),
       ]),
       height: new FormControl(
-        this.userData ? this.userData.height.toFixed(2) : '',
+        this.userData ? parseFloat(this.userData.height.toFixed(2)) : '',
         [
           Validators.required,
           Validators.pattern(/^\d+(?:[.,]\d{1,2})?$/),
@@ -101,7 +99,6 @@ export class FormularioUsuarioComponent implements OnInit {
   }
   get pdfBase64() {
     return this.userForm.get('pdfBase64')!;
-
   }
 
   async submit(formDirective: FormGroupDirective) {
@@ -109,41 +106,37 @@ export class FormularioUsuarioComponent implements OnInit {
       return;
     }
     const userFormData: User = this.userForm.value;
-    let cpfInvalid: boolean = false;
+    let cpfInvalid!: boolean;
     let error!: string;
 
-    /*
-    Comentado até arrumar o bug do edit
-    if (this.userData?.id === userFormData.id) {
+    if (this.userData != null) {
       // Se for uma edição
       cpfInvalid = this.users().some(
         (userDB) =>
-          userDB.id !== userFormData.id && userDB.cpf === userFormData.cpf
+          userDB.cpf === userFormData.cpf && userDB.id !== userFormData.id
       );
       if (cpfInvalid) {
         error = 'Outro usuário já tem esse CPF.';
       }
     } else {
-      //Se for um usuário novo
+      // Se for um usuário novo
       cpfInvalid = this.users().some(
         (usersDB) => usersDB.cpf === userFormData.cpf
       );
       if (cpfInvalid) {
         error = 'Esse CPF já existe.';
+      } else {
+        userFormData.id = uuidv4(); // Gerar UUID para novos usuários
       }
-    }*/
+    }
 
     if (cpfInvalid) {
-      if (cpfInvalid) {
-        const alert = await this.alertController.create({
-          header: error,
-          buttons: ['Confirmar'],
-        });
-        await alert.present();
-      }
+      const alert = await this.alertController.create({
+        header: error,
+        buttons: ['Confirmar'],
+      });
+      await alert.present();
     } else {
-      console.log("Formdata: ");
-      console.log(userFormData);
       this.formSent.emit(userFormData);
       formDirective.resetForm();
       this.userForm.reset();
@@ -154,7 +147,7 @@ export class FormularioUsuarioComponent implements OnInit {
         fileInput.value = '';
       }
     }
- }
+  }
 
   validateAge(control: AbstractControl): { [key: string]: boolean } | null {
     const currentDate = new Date();
@@ -179,13 +172,13 @@ export class FormularioUsuarioComponent implements OnInit {
     var check = false;
 
     for (var i = 0; i < products.length; i++) {
-        if (products[i].checked) {
-            check = true;
-            break;
-        }
+      if (products[i].checked) {
+        check = true;
+        break;
+      }
     }
     if (!check) {
-        return false;
+      return false;
     }
     return true;
   }
@@ -196,29 +189,6 @@ export class FormularioUsuarioComponent implements OnInit {
     this.userForm.get('productsMilho')?.setValue(false);
   }
 
-  /*validateCPF(control: AbstractControl): { [key: string]: boolean } | null {
-    const cpf = control.value;
-
-    let soma = 0;
-    for (let i = 0; i < 9; i++) {
-        soma += parseInt(cpf.charAt(i)) * (10 - i);
-    }
-    let resto = 11 - (soma % 11);
-    let digitoVerificador1 = resto > 9 ? 0 : resto;
-
-    soma = 0;
-    for (let i = 0; i < 10; i++) {
-        soma += parseInt(cpf.charAt(i)) * (11 - i);
-    }
-    resto = 11 - (soma % 11);
-    let digitoVerificador2 = resto > 9 ? 0 : resto;
-
-    if (parseInt(cpf.charAt(9)) !== digitoVerificador1 || parseInt(cpf.charAt(10)) !== digitoVerificador2) {
-        return { CPFinvalido: true };
-    }
-
-    return null;
-}*/
   handleFileInput(event: any) {
     const file: File = event.target.files[0];
     if (file) {

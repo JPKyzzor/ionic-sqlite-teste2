@@ -4,7 +4,7 @@ import { CapacitorSQLite, SQLiteConnection, SQLiteDBConnection} from '@capacitor
 const DB_USERS = 'myuserdb';
 
 export interface User {
-  id: number;
+  id: string;
   name: string;
   cpf: string;
   height: number;
