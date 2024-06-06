@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { User, DatabaseService } from 'src/app/services/database-service.service';
+import { DatabaseService } from 'src/app/services/database-service.service';
 import { IonicStorageDatabaseService } from 'src/app/services/ionic-storage-database.service';
+import { User } from 'src/app/interfaces/user.interface';
 
 @Component({
   selector: 'app-listagem-usuarios',

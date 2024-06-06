@@ -2,7 +2,7 @@ import { Injectable, WritableSignal, signal } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import * as cordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 import {Drivers} from '@ionic/storage'
-import { User } from './database-service.service';
+import { User } from '../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root'

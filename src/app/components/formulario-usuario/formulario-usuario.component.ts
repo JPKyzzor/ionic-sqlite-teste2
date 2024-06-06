@@ -3,7 +3,8 @@ import { Component, EventEmitter, OnInit, Input, Output, ViewChild } from '@angu
 import { AlertController } from '@ionic/angular';
 import { FormControl, FormGroup, Validators, NgForm, FormGroupDirective, AbstractControl } from '@angular/forms';
 import { IonicStorageDatabaseService } from './../../services/ionic-storage-database.service';
-import { DatabaseService, User } from 'src/app/services/database-service.service';
+import { DatabaseService } from 'src/app/services/database-service.service';
+import { User } from 'src/app/interfaces/user.interface';
 
 @Component({
   selector: 'app-formulario-usuario',

@@ -1,20 +1,8 @@
 import { Injectable, WritableSignal, signal } from '@angular/core';
 import { CapacitorSQLite, SQLiteConnection, SQLiteDBConnection} from '@capacitor-community/sqlite';
+import { User } from '../interfaces/user.interface';
 
 const DB_USERS = 'myuserdb';
-
-export interface User {
-  id: string;
-  name: string;
-  cpf: string;
-  height: number;
-  date: string;
-  productsMilho:boolean;
-  productsArroz:boolean;
-  productsSoja:boolean;
-  gender: string;
-  pdfBase64: string;
-}
 
 @Injectable({
   providedIn: 'root',

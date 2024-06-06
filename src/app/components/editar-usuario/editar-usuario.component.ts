@@ -1,8 +1,9 @@
 import { AlertController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
-import { User, DatabaseService } from 'src/app/services/database-service.service';
+import { DatabaseService } from 'src/app/services/database-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonicStorageDatabaseService } from 'src/app/services/ionic-storage-database.service';
+import { User } from 'src/app/interfaces/user.interface';
 
 @Component({
   selector: 'app-editar-usuario',
@@ -23,7 +24,6 @@ export class EditarUsuarioComponent implements OnInit {
 
   async ngOnInit(): Promise<void>{
     const id = this.route.snapshot.paramMap.get('id')!;
-    console.log("Pegando usuario: "+id);
     const usuarioParaEditar:User = await this.isSVC.get(id);
     this.user = usuarioParaEditar;
   }
